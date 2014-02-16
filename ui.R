@@ -37,7 +37,8 @@ shinyUI(pageWithSidebar(
       sliderInput("lambda",
                   "Lambda",
                   min = 1,
-                  max = 15)
+                  max = 15,
+                  value=2)
     )
     
   ),
