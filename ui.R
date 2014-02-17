@@ -29,7 +29,7 @@ shinyUI(pageWithSidebar(
                   max = 1,
                   step = .05,
                   value = .5, 
-                  animate=animationOptions(interval=300, loop=T))
+                  animate=animationOptions(interval=500, loop=T))
     ),
     
     conditionalPanel(
@@ -39,7 +39,8 @@ shinyUI(pageWithSidebar(
                   min = .1,
                   max = 8,
                   step = .1,
-                  value=4)
+                  value=4,
+                  animate=animationOptions(interval=500, loop=T))
     )
     
   ),

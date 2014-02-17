@@ -22,18 +22,13 @@ shinyServer(function(input, output) {
         ggtitle(paste('Binomial Distribution With n =', input$n, 'and p =', input$p))
       
     }else if(input$distribution == 'Poisson'){
-      
-      # Calculate the largest x to display on the plot (any x with p(x) < .0001 is too large to plot)
-      max.x <- ceiling(input$lambda) # start at lambda and work up to find when p(x) gets too small
-      myprob <- 1 # start at 1 and work down until p is small
-      while(myprob > .0001){
-        myprob <<- dpois(max.x, input$lambda)
-        max.x <<- max.x+1 # increment max.x by 1 until it's prob is too small to plot
-      }
+            
       mydat <- data.frame(
-        events = 0:max.x, 
-        probs = dpois(c(0:max.x), input$lambda)
+        events = 0:17, 
+        probs = dpois(c(0:17), input$lambda)
         )
+      
+      mydat <- subset(mydat, probs > .0001) # truncate to show only x's with p(x) > .0001
       
       plot1 <- ggplot(mydat, aes(x=events, y=probs))+
         geom_bar(stat='identity')+
