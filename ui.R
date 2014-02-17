@@ -36,9 +36,10 @@ shinyUI(pageWithSidebar(
       condition="input.distribution == 'Poisson'",
       sliderInput("lambda",
                   "Lambda",
-                  min = 1,
-                  max = 15,
-                  value=2)
+                  min = .1,
+                  max = 8,
+                  step = .1,
+                  value=4)
     )
     
   ),
