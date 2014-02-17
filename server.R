@@ -6,6 +6,14 @@ theme_update(axis.title.y=element_text(angle=90, vjust=0.2))
 # Define server logic required to generate and plot a random distribution
 shinyServer(function(input, output) {
   
+  output$binom.x <- renderUI({
+    numericInput("x",
+                 "",
+                 min = 0,
+                 max = input$n,
+                 step = 1,
+                 value = round(input$p*input$n, 0))
+  })
   
   output$myPlot <- renderPlot({
     

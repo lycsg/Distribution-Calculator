@@ -10,9 +10,9 @@ shinyUI(pageWithSidebar(
   # Sidebar with a slider input for n and p
   sidebarPanel(
     # Choose Distribution
-    selectInput('distribution', 
-                'Choose Distribution',
-                c('Binomial', 'Poisson')),
+    selectInput("distribution", 
+                "Choose Distribution",
+                c("Binomial", "Poisson")),
     # Binomial Inputs
     conditionalPanel(
       condition="input.distribution == 'Binomial'",
@@ -29,7 +29,13 @@ shinyUI(pageWithSidebar(
                   max = 1,
                   step = .05,
                   value = .5, 
-                  animate=animationOptions(interval=500, loop=T))
+                  animate=animationOptions(interval=500, loop=T)),
+      # calculate cdf or pdf, include endpoints or not?
+      selectInput("logicalCond",
+                  "X",
+                  c("<", "<=", "=", ">=", ">")),
+      # input x
+      uiOutput("binom.x")
     ),
     
     conditionalPanel(
