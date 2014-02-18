@@ -10,7 +10,7 @@ shinyUI(pageWithSidebar(
   # Sidebar with a slider input for n and p
   sidebarPanel(
     # Choose Distribution
-    selectInput("distribution", 
+    selectInput("distribution",
                 "Choose Distribution",
                 c("Binomial", "Poisson")),
     # Binomial Inputs

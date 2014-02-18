@@ -8,18 +8,28 @@ shinyServer(function(input, output) {
   
   
   output$xin <- renderUI({
-    if(input$distribution == "Poisson"){
+    if(input$distribution == "Poisson"){ # calculate highest x with prob > .0001
       pvec <- dpois(c(1:17), input$lambda)
       upLim <- max(which(pvec > .0001))
       startval <- input$lambda
     }else if(input$distribution == "Binomial"){
-      upLim <- input$n
       startval <- round(input$n/2, 0)
+      upLim <- input$n
+    }
+    # if ">", cap x at uplim - 1 to prevent error
+    if(input$logicalCond == ">"){
+      upLim <- upLim-1
+    }
+    # if "<", smallest x possible is 1 to avoid error
+    if(input$logicalCond == "<"){
+      lowLim <- 1
+    }else{
+      lowLim <- 0
     }
     
     numericInput("x",
                  "",
-                 min = 0,
+                 min = lowLim,
                  max = upLim,
                  step = 1,
                  value = round(input$lambda, 0))
