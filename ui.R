@@ -29,13 +29,7 @@ shinyUI(pageWithSidebar(
                   max = 1,
                   step = .05,
                   value = .5, 
-                  animate=animationOptions(interval=500, loop=T)),
-      # calculate cdf or pdf, include endpoints or not?
-      selectInput("logicalCond",
-                  "X",
-                  c("<", "<=", "==", ">=", ">")),
-      # input x
-      uiOutput("binom.x")
+                  animate=animationOptions(interval=500, loop=T))
     ),
     
     conditionalPanel(
@@ -46,14 +40,16 @@ shinyUI(pageWithSidebar(
                   max = 8,
                   step = .1,
                   value=4,
-                  animate=animationOptions(interval=500, loop=T)),
-      # calculate cdf or pdf, include endpoints or not?
-      selectInput("logicalCond",
-                  "X",
-                  c("<", "<=", "==", ">=", ">")),
-      # input x
-      uiOutput("pois.x")
-    )
+                  animate=animationOptions(interval=500, loop=T))
+    ),
+    
+    # calculate cdf or pdf, include endpoints or not?
+    selectInput("logicalCond",
+                "X",
+                c("<", "<=", "==", ">=", ">")),
+    # input x
+    uiOutput("xin")
+    
   ),
   
   # Show a plot of the generated distribution

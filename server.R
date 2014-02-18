@@ -6,19 +6,18 @@ theme_update(axis.title.y=element_text(angle=90, vjust=0.2))
 # Define server logic required to generate and plot a random distribution
 shinyServer(function(input, output) {
   
-  output$binom.x <- renderUI({
-    numericInput("binomx",
-                 "",
-                 min = 0,
-                 max = input$n,
-                 step = 1,
-                 value = round(input$p*input$n, 0))
-  })
   
-  output$pois.x <- renderUI({
-    pvec <- dpois(c(1:17), input$lambda)
-    upLim <- max(which(pvec > .0001))
-    numericInput("poisx",
+  output$xin <- renderUI({
+    if(input$distribution == "Poisson"){
+      pvec <- dpois(c(1:17), input$lambda)
+      upLim <- max(which(pvec > .0001))
+      startval <- input$lambda
+    }else if(input$distribution == "Binomial"){
+      upLim <- input$n
+      startval <- round(input$n/2, 0)
+    }
+    
+    numericInput("x",
                  "",
                  min = 0,
                  max = upLim,
@@ -28,9 +27,9 @@ shinyServer(function(input, output) {
   
   myexpr.global <- reactive({
     if(input$distribution=='Binomial'){
-      myexpr <- paste('mydat$x', input$logicalCond, input$binomx) # get inputs and create expression as a string
+      myexpr <- paste('mydat$x', input$logicalCond, input$x) # get inputs and create expression as a string
     }else if(input$distribution == 'Poisson'){
-      myexpr <- paste('mydat$x', input$logicalCond, input$poisx) # get inputs and create expression as a string
+      myexpr <- paste('mydat$x', input$logicalCond, input$x) # get inputs and create expression as a string
     }
     return(myexpr)
   })
@@ -62,33 +61,33 @@ shinyServer(function(input, output) {
     if(input$distribution == 'Binomial'){
       line1 <- paste('Binomial Distribution With n =', input$n, 'and p =', input$p)
       if(input$logicalCond=='<'){
-        myval <- pbinom(input$binomx-1, input$n, input$p)
+        myval <- pbinom(input$x-1, input$n, input$p)
       }else if(input$logicalCond=='<='){
-        myval <- pbinom(input$binomx, input$n, input$p)
+        myval <- pbinom(input$x, input$n, input$p)
       }else if(input$logicalCond=='=='){
-        myval <- dbinom(input$binomx, input$n, input$p)
+        myval <- dbinom(input$x, input$n, input$p)
       }else if(input$logicalCond=='>='){
-        myval <- 1-pbinom(input$binomx-1, input$n, input$p)
+        myval <- 1-pbinom(input$x-1, input$n, input$p)
       }else if(input$logicalCond=='>'){
-        myval <- 1-pbinom(input$binomx, input$n, input$p)
+        myval <- 1-pbinom(input$x, input$n, input$p)
       }
       myval <- round(myval, 3)
-      line2 <- paste0("P(x", input$logicalCond, " ", input$binomx, ") =", myval)
+      line2 <- paste0("P(x", input$logicalCond, " ", input$x, ") =", myval)
     }else if(input$distribution == 'Poisson'){
       line1 <- paste('Poisson Distribution With Lambda =', input$lambda)
       if(input$logicalCond=='<'){
-        myval <- ppois(input$poisx-1, input$lambda)
+        myval <- ppois(input$x-1, input$lambda)
       }else if(input$logicalCond=='<='){
-        myval <- ppois(input$poisx, input$lambda)
+        myval <- ppois(input$x, input$lambda)
       }else if(input$logicalCond=='=='){
-        myval <- dpois(input$poisx, input$lambda)
+        myval <- dpois(input$x, input$lambda)
       }else if(input$logicalCond=='>='){
-        myval <- 1-ppois(input$poisx-1, input$lambda)
+        myval <- 1-ppois(input$x-1, input$lambda)
       }else if(input$logicalCond=='>'){
-        myval <- 1-ppois(input$poisx, input$lambda)
+        myval <- 1-ppois(input$x, input$lambda)
       }
       myval <- round(myval, 4)
-      line2 <- paste0("P(x", input$logicalCond, " ", input$poisx, ") =", myval)
+      line2 <- paste0("P(x", input$logicalCond, " ", input$x, ") = ", myval)
     }
     
     return(paste(line1, line2, sep='\n'))
