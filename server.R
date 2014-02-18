@@ -56,10 +56,19 @@ shinyServer(function(input, output) {
     return(mydat)
   })
   
-  output$myText <- renderText({
+  output$myText1 <- renderText({
     
     if(input$distribution == 'Binomial'){
       line1 <- paste('Binomial Distribution With n =', input$n, 'and p =', input$p)
+    }else if(input$distribution == 'Poisson'){
+      line1 <- paste('Poisson Distribution With Lambda =', input$lambda)
+    }
+    return(line1)
+  })
+  
+  output$myText2 <- renderText({
+    
+    if(input$distribution == 'Binomial'){
       if(input$logicalCond=='<'){
         myval <- pbinom(input$x-1, input$n, input$p)
       }else if(input$logicalCond=='<='){
@@ -74,7 +83,6 @@ shinyServer(function(input, output) {
       myval <- round(myval, 3)
       line2 <- paste0("P(x", input$logicalCond, " ", input$x, ") =", myval)
     }else if(input$distribution == 'Poisson'){
-      line1 <- paste('Poisson Distribution With Lambda =', input$lambda)
       if(input$logicalCond=='<'){
         myval <- ppois(input$x-1, input$lambda)
       }else if(input$logicalCond=='<='){
@@ -90,7 +98,7 @@ shinyServer(function(input, output) {
       line2 <- paste0("P(x", input$logicalCond, " ", input$x, ") = ", myval)
     }
     
-    return(paste(line1, line2, sep='\n'))
+    return(line2)
   })
   
   output$myPlot <- renderPlot({

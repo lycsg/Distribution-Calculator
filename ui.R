@@ -54,7 +54,8 @@ shinyUI(pageWithSidebar(
   
   # Show a plot of the generated distribution
   mainPanel(
-    h1(textOutput("myText")),
+    h1(textOutput("myText1")),
+    h1(textOutput("myText2")),
     plotOutput("myPlot")
   )
 ))
